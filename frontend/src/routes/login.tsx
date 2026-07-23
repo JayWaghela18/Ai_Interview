@@ -38,10 +38,10 @@ function LoginPage() {
             setEmailError(err);
             if (err) return;
             setLoading(true);
-            // simulate auth request then navigate to resume upload
+            // simulate auth request then navigate to the next onboarding step
             setTimeout(() => {
                 setLoading(false);
-                navigate({ to: "/" });
+                navigate({ to: "/upload" });
             }, 900);
         },
         [email, navigate]
