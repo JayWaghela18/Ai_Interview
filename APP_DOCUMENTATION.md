@@ -72,7 +72,7 @@ Backend dependencies are pinned or constrained in [`backend/requirements.txt`](C
 
 ## 3. Frontend-to-backend flow
 
-The frontend reads the backend URL from `VITE_API_URL`. During local development it falls back to port `8000`.
+The frontend reads the backend URL from `VITE_API_URL`. During local development it falls back to port `8000`; in a production build without an override it uses the same-origin `/api` prefix.
 
 Used in:
 
@@ -81,15 +81,15 @@ Used in:
 - [`frontend/src/routes/results.tsx`](C:/Users/dhruv/Downloads/Ai_Interview-main/Ai_Interview-main/frontend/src/routes/results.tsx)
 
 ```ts
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? "/api" : "http://localhost:8000");
 ```
 
 ### Request sequence
 
 ```text
 Upload page
-  POST /upload          PDF -> extracted text
-  POST /analyze         extracted text -> parsed resume JSON
+  POST /api/upload      PDF -> extracted text (deployed same-origin API)
+  POST /api/analyze     extracted text -> parsed resume JSON
   sessionStorage        stores parsedResume
 
 Interview page
@@ -436,7 +436,7 @@ Environment variable:
   VITE_API_URL=https://ai-interview-backend-q5v4.onrender.com
 ```
 
-`VITE_API_URL` is compiled into the browser bundle, so it may contain the public backend URL but must never contain `GROQ_API_KEY`.
+`VITE_API_URL` is compiled into the browser bundle, so it may contain the public backend URL (for example, a Render URL or `/api`) but must never contain `GROQ_API_KEY`.
 
 ### Backend on Render
 
