@@ -438,6 +438,11 @@ Environment variable:
 
 `VITE_API_URL` is compiled into the browser bundle, so it may contain the public backend URL (for example, a Render URL or `/api`) but must never contain `GROQ_API_KEY`.
 
+The backend accepts requests from any frontend origin without browser credentials.
+This is intentional for the current MVP: the frontend does not use cookies or
+credentialed requests, and wildcard origins must keep `allow_credentials` disabled
+so JSON requests such as `POST /api/analyze` pass their CORS preflight.
+
 ### Backend on Render
 
 The backend is a FastAPI service started with Uvicorn. Render should be configured with the repository root or the `backend` directory as the service root, matching the selected path:

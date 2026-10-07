@@ -36,7 +36,9 @@ app = FastAPI(title="InterviewAI Backend")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],       # Allow frontend on any port (dev only)
-    allow_credentials=True,
+    # The frontend does not send cookies or other credentials. Keeping this
+    # false allows wildcard origins to pass JSON preflight requests.
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
